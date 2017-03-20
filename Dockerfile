@@ -7,7 +7,6 @@ ARG user=jenkins
 ARG group=jenkins
 ARG uid=1000
 ARG gid=1000
-
 # jenkins version being bundled in this docker image
 ARG JENKINS_VERSION
 ENV JENKINS_VERSION ${JENKINS_VERSION:-2.51}
@@ -15,7 +14,6 @@ ENV JENKINS_VERSION ${JENKINS_VERSION:-2.51}
 ARG JENKINS_SHA=5eca975de23a3bfb99b17b0185b0ea0be053448d
 ARG JENKINS_URL=https://repo.jenkins-ci.org/public/org/jenkins-ci/main/jenkins-war/${JENKINS_VERSION}/jenkins-war-${JENKINS_VERSION}.war
 ENV JENKINS_UC https://updates.jenkins-ci.org
-
 # Use tini as subreaper in Docker container to adopt zombie processes 
 ENV TINI_SHA afbf8de8a63ce8e4f18cb3f34dfdbbd354af68a1
 ENV TINI_VERSION 0.13.2
@@ -36,7 +34,8 @@ RUN groupadd -g ${gid} ${group} \
   \
   && mkdir -p /usr/share/jenkins/ref/init.groovy.d \
   \
-  && curl -fsSL https://github.com/krallin/tini/releases/download/v${TINI_VERSION}/tini-static-amd64 -o /bin/tini && chmod +x /bin/tini \
+  && curl -fsSL https://github.com/krallin/tini/releases/download/v${TINI_VERSION}/tini-static-amd64 -o /bin/tini \
+  && chmod +x /bin/tini \
   && echo "$TINI_SHA  /bin/tini" | sha1sum -c -
 
 COPY init.groovy /usr/share/jenkins/ref/init.groovy.d/tcp-slave-agent-port.groovy
